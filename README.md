@@ -1,16 +1,20 @@
-# inventory_manager
+![Static Badge](https://img.shields.io/badge/build-macos-green)
 
-A new Flutter project.
+![GitHub last commit](https://img.shields.io/github/last-commit/mwilko/Mobile_Health_App) ![Static Badge](https://img.shields.io/badge/status-development-yellow)
+# Inventory Manager
 
-## Getting Started
+This application will be an inventory managing application, where users can see where their products are located as well as lots of details about the respective products.
 
-This project is a starting point for a Flutter application.
+# Development Structure:
+## Branches:
+- master: branch where official updates are pushed to.
+- test: development would be pushed to this branch, not seperated backend and frontend because you wouldnt be able to test connectivity.
 
-A few resources to get you started if this is your first Flutter project:
+## App Technologies:
+- Flutter: To develop and deploy this application i will be utilising the framework Flutter and Dart released by Google.
+- NodeJS: Backend would be assisted with NodeJS, API Endpoints would be created to allow the user to easily create, read, update and delete data from the database.
+- MongoDB Atlas: NoSQL database management system of MongoDB Atlas which is a cloud based plan for MonogDB.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## How to Install:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The project is in early stages in development so there isnt any build instructions as of now.
