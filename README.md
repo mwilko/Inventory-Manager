@@ -5,8 +5,8 @@
 
 This application will be an inventory managing application, where users can see where their products are located as well as lots of details about the respective products.
 
-## Development Structure:
-# Branches:
+# Development Structure:
+## Branches:
 - master: branch where official updates are pushed to.
 - test: development would be pushed to this branch, not seperated backend and frontend because you wouldnt be able to test connectivity.
 
