@@ -1,4 +1,8 @@
-![Static Badge](https://img.shields.io/badge/build-macos-green)
+![Static Badge](https://img.shields.io/badge/build-macos-green) ![Static Badge](https://img.shields.io/badge/build-windows-yellow) ![Static Badge](https://img.shields.io/badge/build-ios-yellow) ![Static Badge](https://img.shields.io/badge/build-android-yellow) ![Static Badge](https://img.shields.io/badge/build-web-yellow)
+
+
+
+
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/mwilko/Mobile_Health_App) ![Static Badge](https://img.shields.io/badge/status-development-yellow)
 # Inventory Manager
