@@ -1,10 +1,20 @@
-const express = require('express'); // Import the express library here
-const body_parser = require('body-parser'); // Import the body-parser library here
-const userRouter = require('./routers/user.router'); // Import the user router here
+const express = require('express');
+const bodyParser = require('body-parser');
+const userRouter = require('./routers/user.router');
+const productRouter = require('./routers/product.router');
+const ToDoRoute = require('./routers/todo.router');
 
-const app = express(); // Create a new express application and store it in the app variable
+const app = express();
 
-app.use(body_parser.json()); // Tell the app to use the JSON body parser
-app.use('/', userRouter); // Tell the app to use the user router
+app.use(bodyParser.json()); // Use the JSON body parser for parsing incoming requests
 
-module.exports = app; // Export the app from this module
+// Use the user router for handling user-related routes
+app.use('/', userRouter);
+
+// Use the product router for handling product-related routes
+app.use('/', productRouter);
+
+// Use the ToDo router for handling ToDo-related routes
+app.use('/', ToDoRoute);
+
+module.exports = app;
