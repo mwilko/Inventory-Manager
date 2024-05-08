@@ -1,5 +1,5 @@
 const express = require('express');
-const UserModel = require('./user.model');
+const UserModel = require('../model/user.model');
 const app = express();
 
 app.use(express.json()); // for parsing application/json
