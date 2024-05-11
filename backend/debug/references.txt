@@ -1,0 +1,1 @@
+jsondecode and jsonencode errors: https://stackoverflow.com/questions/55671441/flutter-formatexception-unexpected-character-at-character-1 (alternative method used now, not this)

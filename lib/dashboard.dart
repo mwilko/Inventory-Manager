@@ -31,51 +31,84 @@ class _DashboardState extends State<Dashboard> {
     getTodoList(userId);
   }
 
-  void addTodo() async{
-    if(_todoTitle.text.isNotEmpty && _todoDesc.text.isNotEmpty){
-
-      var regBody = {
-        "userId":userId,
-        "title":_todoTitle.text,
-        "desc":_todoDesc.text
-      };
-
-      var response = await http.post(Uri.parse(addtodo),
-          headers: {"Content-Type":"application/json"},
-          body: jsonEncode(regBody)
-      );
-
-      var jsonResponse = jsonDecode(response.body);
-
-      print(jsonResponse['status']);
-
-      if(jsonResponse['status']){
-        _todoDesc.clear();
-        _todoTitle.clear();
-        Navigator.pop(context);
-        getTodoList(userId);
-      }else{
-        print("SomeThing Went Wrong");
-      }
-    }
-  }
-
-  void getTodoList(userId) async {
-    var regBody = {
-      "userId":userId
+void addTodo() async {
+  if (_todoTitle.text.isNotEmpty && _todoDesc.text.isNotEmpty) {
+    var regBody = { // Create a map of the data you want to send to the API
+      "userId": userId,
+      "title": _todoTitle.text,
+      "desc": _todoDesc.text
     };
 
-    var response = await http.post(Uri.parse(getToDoList),
-        headers: {"Content-Type":"application/json"},
-        body: jsonEncode(regBody)
-    );
-    var jsonResponse = await json.decode(json.encode(response.body));
-    items = jsonResponse['success'];
+    try { // Use a try/catch block to handle potential errors
+      var response = await http.post(
+        Uri.parse(addtodo), // Send a POST request to the API
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(regBody), // Convert the map to a JSON string
+      );
 
-    setState(() {
-
-    });
+      if (response.statusCode == 200) { // Check if the API returns a 200 OK response
+        var jsonResponse = jsonDecode(response.body);
+        if (jsonResponse is Map && jsonResponse.containsKey('status')) {
+          if (jsonResponse['status']) {
+            _todoDesc.clear();
+            _todoTitle.clear();
+            Navigator.pop(context);
+            getTodoList(userId);
+          } else {
+            print("Something went wrong");
+          }
+        } else {
+          print("Invalid response format");
+        }
+      } else {
+        // Handle non-200 status code
+        print('Failed to add todo: ${response.statusCode}');
+        // You can show a snackbar, toast, or display an error message to the user
+      }
+    } catch (e) { 
+      // Handle network or other errors
+      print('Error adding todo: $e');
+      // You can show a snackbar, toast, or display an error message to the user
+    }
   }
+}
+
+
+void getTodoList(userId) async {
+  var regBody = { // Create a map of the data you want to send to the API
+    "userId": userId
+  };
+
+  try { // Use a try/catch block to handle potential errors
+    var response = await http.post(
+      Uri.parse(getToDoList), // Send a POST request to the API
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(regBody), // Convert the map to a JSON string
+    );
+
+    if (response.statusCode == 200) { // Check if the API returns a 200 OK response
+      var jsonResponse = jsonDecode(response.body);
+      if (jsonResponse is Map && jsonResponse.containsKey('success')) {
+        // Check if the response is a JSON object and contains the 'success' key
+        items = jsonResponse['success'];
+      } else {
+        items = [];
+      }
+    } else {
+      // Handle non-200 status code
+      print('Failed to fetch todo list: ${response.statusCode}');
+      // You can show a snackbar, toast, or display an error message to the user
+    }
+  } catch (e) {
+    // Handle network or other errors
+    print('Error fetching todo list: $e');
+    // You can show a snackbar, toast, or display an error message to the user
+  }
+
+  // Ensure to update the state after handling the response
+  setState(() {});
+}
+
 
   void deleteItem(id) async{
     var regBody = {
