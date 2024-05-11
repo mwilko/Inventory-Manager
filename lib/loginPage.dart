@@ -9,12 +9,13 @@ import 'package:velocity_x/velocity_x.dart';
 import 'package:http/http.dart' as http;
 import 'config.dart';
 
-class SignInPage extends StatefulWidget {
+class SignInPage extends StatefulWidget { // A StatefulWidget to sign in the user.
   @override
   _SignInPageState createState() => _SignInPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _SignInPageState extends State<SignInPage> { // A State class to handle the state of the SignInPage.
+  // creating three TextEditingController objects to get the user input for email, password, and username.
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
@@ -22,31 +23,31 @@ class _SignInPageState extends State<SignInPage> {
   late SharedPreferences prefs;
 
   @override
-  void initState() {
+  void initState() { // A function to initialize the state of the SignInPage.
     // TODO: implement initState
     super.initState();
     initSharedPref();
   }
 
-  void initSharedPref() async{
+  void initSharedPref() async{ // A function to initialize the shared preferences.
     prefs = await SharedPreferences.getInstance();
   }
 
-  void loginUser() async{
+  void loginUser() async{ // A function to login the user.
     if(emailController.text.isNotEmpty && passwordController.text.isNotEmpty && usernameController.text.isNotEmpty){
 
-      var reqBody = {
+      var reqBody = { // Create a map of the data you want to send to the API
         "username": usernameController.text,
         "email":emailController.text,
         "password":passwordController.text
       };
     
-      var response = await http.post(Uri.parse(login),
+      var response = await http.post(Uri.parse(login), // Send a POST request to the API
           headers: {"Content-Type":"application/json"},
-          body: jsonEncode(reqBody)
+          body: jsonEncode(reqBody) // Convert the map to a JSON string
       );
 
-      var jsonResponse = jsonDecode(response.body);
+      var jsonResponse = jsonDecode(response.body); // Decode the response from the API.
       if(jsonResponse['status'] != null && jsonResponse['status']){
           var myToken = jsonResponse['token'];
           prefs.setString('token', myToken);
@@ -59,7 +60,7 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { // Build the UI of the SignInPage.
     return SafeArea(
       child: Scaffold(
         body: Container(
