@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:inventory_manager/dashboard.dart';
 import 'package:inventory_manager/registration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'applogo.dart';
+//import 'applogo.dart';
 import 'package:http/http.dart' as http;
 import 'config.dart';
 
@@ -16,6 +17,7 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
   bool _isNotValidate = false;
   late SharedPreferences prefs;
 
@@ -31,20 +33,21 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   void loginUser() async{
-    if(emailController.text.isNotEmpty && passwordController.text.isNotEmpty){
+    if(emailController.text.isNotEmpty && passwordController.text.isNotEmpty && usernameController.text.isNotEmpty){
 
       var reqBody = {
+        "username": usernameController.text,
         "email":emailController.text,
         "password":passwordController.text
       };
-
+    
       var response = await http.post(Uri.parse(login),
           headers: {"Content-Type":"application/json"},
           body: jsonEncode(reqBody)
       );
 
       var jsonResponse = jsonDecode(response.body);
-      if(jsonResponse['status']){
+      if(jsonResponse['status'] != null && jsonResponse['status']){
           var myToken = jsonResponse['token'];
           prefs.setString('token', myToken);
           Navigator.push(context, MaterialPageRoute(builder: (context)=>Dashboard(token: myToken)));
@@ -76,10 +79,20 @@ class _SignInPageState extends State<SignInPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  CommonLogo(),
+                  //CommonLogo(),
                   HeightBox(10),
                   "Email Sign-In".text.size(22).yellow100.make(),
-
+                  TextField(
+                    controller: usernameController,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        hintText: "Username",
+                        errorText: _isNotValidate ? "Enter Proper Info" : null,
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+                  ).p4().px24(), 
                   TextField(
                     controller: emailController,
                     keyboardType: TextInputType.text,

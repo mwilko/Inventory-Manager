@@ -4,6 +4,12 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
+    username: {
+        type: String,
+        required: [true, "username is required"],
+        unique: true, // ensures usernames are unique
+      },
+    
     email: {
         type: String,
         lowercase: true,

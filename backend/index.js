@@ -1,6 +1,7 @@
 const app = require('./app'); // Import the app from app.js
 const db = require('./config/db'); // Import the db from db.js
-const UserModel = require('./model/user.model'); // Import the UserModel from user.model.js
+const UserModel = require('./models/user.model'); // Import the UserModel from user.model.js
+const toDoModel = require('./models/todo.model'); // Import the toDoModel from todo.model.js
 
 const port = 3000; // Set the port to 3000
 

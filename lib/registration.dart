@@ -2,8 +2,9 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'applogo.dart';
+//import 'applogo.dart';
 import 'loginPage.dart';
 import 'package:http/http.dart' as http;
 import 'config.dart';
@@ -17,12 +18,14 @@ class _RegistrationState extends State<Registration> {
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
   bool _isNotValidate = false;
 
   void registerUser() async{
-    if(emailController.text.isNotEmpty && passwordController.text.isNotEmpty){
+    if(emailController.text.isNotEmpty && passwordController.text.isNotEmpty && usernameController.text.isNotEmpty){
 
       var regBody = {
+        "username": usernameController.text,
         "email":emailController.text,
         "password":passwordController.text
       };
@@ -69,7 +72,7 @@ class _RegistrationState extends State<Registration> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  CommonLogo(),
+                  //CommonLogo(),
                   HeightBox(10),
                   "CREATE YOUR ACCOUNT".text.size(22).yellow100.make(),
                   TextField(

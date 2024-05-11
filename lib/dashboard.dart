@@ -69,8 +69,7 @@ class _DashboardState extends State<Dashboard> {
         headers: {"Content-Type":"application/json"},
         body: jsonEncode(regBody)
     );
-
-    var jsonResponse = jsonDecode(response.body);
+    var jsonResponse = await json.decode(json.encode(response.body));
     items = jsonResponse['success'];
 
     setState(() {

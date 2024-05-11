@@ -1,10 +1,13 @@
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const userRouter = require('./routers/user.router');
 const productRouter = require('./routers/product.router');
 const ToDoRoute = require('./routers/todo.router');
 
 const app = express();
+
+app.use(cors()); // Enable CORS for all requests
 
 app.use(bodyParser.json()); // Use the JSON body parser for parsing incoming requests
 
