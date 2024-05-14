@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
@@ -10,27 +9,25 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   SharedPreferences? prefs;
   String? username;
-  final TextEditingController _locationController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    initializePrefs();
+    initializePrefs(); // Call the function to initialize SharedPreferences
   }
 
+  // Function to initialize SharedPreferences
   Future<void> initializePrefs() async {
-    prefs = await SharedPreferences.getInstance();
-    username = prefs?.getString('username');
+    prefs = await SharedPreferences.getInstance(); // Get SharedPreferences instance
+    // Retrieve the username from SharedPreferences
+    username = prefs?.getString('username'); 
   }
 
-  Future<void> _displayProfileSettings() async {
-    final location = _locationController.text;
-    final response = await http.get(Uri.parse('http://localhost:3000/products?location=$location'));
-    if (response.statusCode == 200) {
-      print(response.body);
-    } else {
-      print('Error: ${response.statusCode}');
-    }
+  // Function to log out
+  Future<void> logout() async {
+    await prefs?.remove('username'); // Remove username from SharedPreferences
+    await prefs?.remove('token'); // Remove token from SharedPreferences
+    Navigator.pushReplacementNamed(context, '/login'); // Navigate to login page
   }
 
   @override
@@ -38,23 +35,18 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: logout, // Call logout function when logout button is pressed
+          ),
+        ],
       ),
       body: Column(
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _locationController,
-              decoration: InputDecoration(
-                labelText: 'Enter Location Filter',
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {
-                    _displayProfileSettings();
-                  },
-                ),
-              ),
-            ),
+            child: Text('Username: $username'), // Display the username
           ),
         ],
       ),

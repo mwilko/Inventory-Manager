@@ -1,6 +1,6 @@
-const url = 'http://localhost:3000/';
-const registration = url + "register";
-const login = url + 'login';
-const addtodo = url + 'storeTodo';
-const getToDoList = url + 'getUserTodoList';
-const deleteTodo = url + 'deleteTodo';
+final url = 'http://localhost:3000/';
+final registration = url + "register";
+final login = url + 'login';
+final addtodo = url + 'storeTodo';
+final getToDoList = url + 'getUserTodoList';
+final deleteTodo = url + 'deleteTodo';

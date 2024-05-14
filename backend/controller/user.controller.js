@@ -22,12 +22,12 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
     try {
 
-        const { username, password } = req.body;
+        const { username, email, password } = req.body;
 
-        if (!username || !password) {
+        if (!username || !email || !password) {
             throw new Error('Parameter are not correct');
         }
-        let user = await UserServices.checkUser(username);
+        let user = await UserServices.checkUser(email);
         if (!user) {
             return res.status(404).json({ error: 'User does not exist' });
         }

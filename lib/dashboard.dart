@@ -8,7 +8,7 @@ import 'profile.dart'; // Import the Profile file
 
 class Dashboard extends StatefulWidget { // A StatefulWidget to display the dashboard.
   final token; 
-
+  
   const Dashboard({@required this.token, Key? key}) : super(key: key);
 
   @override

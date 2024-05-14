@@ -16,7 +16,7 @@ class SignInPage extends StatefulWidget { // A StatefulWidget to sign in the use
 
 class _SignInPageState extends State<SignInPage> { // A State class to handle the state of the SignInPage.
   // creating three TextEditingController objects to get the user input for password, and username.
-  // TextEditingController emailController = TextEditingController(); // Not really needed for sign-in
+  TextEditingController emailController = TextEditingController(); // Not really needed for sign-in
   TextEditingController passwordController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   bool _isNotValidate = false;
@@ -24,7 +24,6 @@ class _SignInPageState extends State<SignInPage> { // A State class to handle th
 
   @override
   void initState() { // A function to initialize the state of the SignInPage.
-    // TODO: implement initState
     super.initState();
     initSharedPref();
   }
@@ -33,34 +32,71 @@ class _SignInPageState extends State<SignInPage> { // A State class to handle th
     prefs = await SharedPreferences.getInstance();
   }
 
-  void loginUser() async{ // A function to login the user.
-    if(passwordController.text.isNotEmpty && usernameController.text.isNotEmpty){
+  void loginUser() async {
+  if (emailController.text.isNotEmpty &&
+      passwordController.text.isNotEmpty &&
+      usernameController.text.isNotEmpty) {
+    var reqBody = {
+      "username": usernameController.text,
+      "email": emailController.text,
+      "password": passwordController.text
+    };
 
-      var reqBody = { // Create a map of the data you want to send to the API
-        "username": usernameController.text,
-        //"email":emailController.text, // Not really needed for sign-in
-        "password":passwordController.text
-      };
-    
-      var response = await http.post(Uri.parse(login), // Send a POST request to the API
-          headers: {"Content-Type":"application/json"},
-          body: jsonEncode(reqBody) // Convert the map to a JSON string
+    var response = await http.post(
+      Uri.parse(login),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(reqBody),
+    );
+
+    var jsonResponse = jsonDecode(response.body);
+    if (jsonResponse['status'] != null && jsonResponse['status']) {
+      var myToken = jsonResponse['token'];
+      var username = jsonResponse['username'];
+      await prefs.setString('token', myToken);
+      await prefs.setString('username', usernameController.text); // Save the entered username
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard(token: myToken)));
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Error: Invalid Details"),
+            content: Text("Please enter the correct login details.\nCheck your username, email, and password."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("Close"),
+              ),
+            ],
+          );
+        },
       );
-
-      var jsonResponse = jsonDecode(response.body); // Decode the response from the API.
-      if(jsonResponse['status'] != null && jsonResponse['status']){
-          var myToken = jsonResponse['token'];
-          var username = jsonResponse['username']; // Get the username from the response
-          prefs.setString('token', myToken);
-          prefs.setString('username', username); // Save the username
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>Dashboard(token: myToken)));
-      }else{
-          print('Something went wrong');
-      }
-
-
     }
+  } else {
+    setState(() {
+      _isNotValidate = true;
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Error: No Details Entered"),
+            content: Text("Please enter your login details"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("Close"),
+              ),
+            ],
+          );
+        },
+      );
+    });
   }
+}
 
   @override
   Widget build(BuildContext context) { // Build the UI of the SignInPage.
@@ -97,18 +133,18 @@ class _SignInPageState extends State<SignInPage> { // A State class to handle th
                         border: OutlineInputBorder( // Set the border of the TextField.
                             borderRadius: BorderRadius.all(Radius.circular(10.0)))),
                   ).p4().px24(), 
-                  //// Not really needed for sign-in although probably for registration
-                  // TextField( // A widget to get the user input for the password.
-                  //   controller: emailController, // Set the controller of the TextField to the passwordController.
-                  //   keyboardType: TextInputType.text,
-                  //   decoration: InputDecoration(
-                  //       filled: true,
-                  //       fillColor: Colors.white,
-                  //       hintText: "Email",
-                  //       errorText: _isNotValidate ? "Enter Proper Info" : null,
-                  //       border: OutlineInputBorder(
-                  //           borderRadius: BorderRadius.all(Radius.circular(10.0)))),
-                  // ).p4().px24(),
+                  // Not really needed for sign-in although probably for registration
+                  TextField( // A widget to get the user input for the password.
+                    controller: emailController, // Set the controller of the TextField to the passwordController.
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        hintText: "Email",
+                        errorText: _isNotValidate ? "Enter Proper Info" : null,
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+                  ).p4().px24(),
                   TextField( // A widget to get the user input for the password.
                     controller: passwordController , // Set the controller of the TextField to the passwordController.
                     keyboardType: TextInputType.text,
