@@ -15,8 +15,8 @@ class SignInPage extends StatefulWidget { // A StatefulWidget to sign in the use
 }
 
 class _SignInPageState extends State<SignInPage> { // A State class to handle the state of the SignInPage.
-  // creating three TextEditingController objects to get the user input for email, password, and username.
-  TextEditingController emailController = TextEditingController();
+  // creating three TextEditingController objects to get the user input for password, and username.
+  // TextEditingController emailController = TextEditingController(); // Not really needed for sign-in
   TextEditingController passwordController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   bool _isNotValidate = false;
@@ -34,11 +34,11 @@ class _SignInPageState extends State<SignInPage> { // A State class to handle th
   }
 
   void loginUser() async{ // A function to login the user.
-    if(emailController.text.isNotEmpty && passwordController.text.isNotEmpty && usernameController.text.isNotEmpty){
+    if(passwordController.text.isNotEmpty && usernameController.text.isNotEmpty){
 
       var reqBody = { // Create a map of the data you want to send to the API
         "username": usernameController.text,
-        "email":emailController.text,
+        //"email":emailController.text, // Not really needed for sign-in
         "password":passwordController.text
       };
     
@@ -61,66 +61,67 @@ class _SignInPageState extends State<SignInPage> { // A State class to handle th
 
   @override
   Widget build(BuildContext context) { // Build the UI of the SignInPage.
-    return SafeArea(
+    return SafeArea( // A widget to make sure that the content is displayed within the safe area of the screen.
       child: Scaffold(
         body: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
             gradient: LinearGradient(
-                colors: [const Color(0XFFF95A3B),const Color(0XFFF96713)],
+                colors: [Color.fromARGB(255, 47, 231, 255),Color.fromARGB(255, 47, 231, 255)],
                 begin: FractionalOffset.topLeft,
                 end: FractionalOffset.bottomCenter,
                 stops: [0.0,0.8],
                 tileMode: TileMode.mirror
             ),
           ),
-          child: Center(
+          child: Center( // A widget to center the content of the SignInPage.
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   //CommonLogo(),
                   HeightBox(10),
-                  "Email Sign-In".text.size(22).yellow100.make(),
-                  TextField(
-                    controller: usernameController,
+                  "Email Sign-In".text.size(22).yellow100.make(), // A widget to display the title of the SignInPage.
+                  TextField( // A widget to get the user input for the email.
+                    controller: usernameController, // Set the controller of the TextField to the emailController.
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                        filled: true,
+                        filled: true, 
                         fillColor: Colors.white,
-                        hintText: "Username",
+                        hintText: "Username", // Set the placeholder text of the TextField.
                         errorText: _isNotValidate ? "Enter Proper Info" : null,
-                        border: OutlineInputBorder(
+                        border: OutlineInputBorder( // Set the border of the TextField.
                             borderRadius: BorderRadius.all(Radius.circular(10.0)))),
                   ).p4().px24(), 
-                  TextField(
-                    controller: emailController,
+                  //// Not really needed for sign-in although probably for registration
+                  // TextField( // A widget to get the user input for the password.
+                  //   controller: emailController, // Set the controller of the TextField to the passwordController.
+                  //   keyboardType: TextInputType.text,
+                  //   decoration: InputDecoration(
+                  //       filled: true,
+                  //       fillColor: Colors.white,
+                  //       hintText: "Email",
+                  //       errorText: _isNotValidate ? "Enter Proper Info" : null,
+                  //       border: OutlineInputBorder(
+                  //           borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+                  // ).p4().px24(),
+                  TextField( // A widget to get the user input for the password.
+                    controller: passwordController , // Set the controller of the TextField to the passwordController.
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
-                        hintText: "Email",
-                        errorText: _isNotValidate ? "Enter Proper Info" : null,
-                        border: OutlineInputBorder(
+                        hintText: "Password", // Set the placeholder text of the TextField.
+                        errorText: _isNotValidate ? "Enter Proper Info" : null, // error handling
+                        border: OutlineInputBorder( 
                             borderRadius: BorderRadius.all(Radius.circular(10.0)))),
                   ).p4().px24(),
-                  TextField(
-                    controller: passwordController,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        hintText: "Password",
-                        errorText: _isNotValidate ? "Enter Proper Info" : null,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)))),
-                  ).p4().px24(),
-                  GestureDetector(
+                  GestureDetector( // A widget to handle the tap event on the LogIn button.
                     onTap: (){
-                        loginUser();
+                        loginUser(); // Call the loginUser function when the user taps the LogIn button.
                     },
-                    child: HStack([
+                    child: HStack([ // A widget to display the LogIn button.
                       VxBox(child: "LogIn".text.white.makeCentered().p16()).green600.roundedLg.make(),
                     ]),
                   ),
@@ -129,11 +130,11 @@ class _SignInPageState extends State<SignInPage> { // A State class to handle th
             ),
           ),
         ),
-        bottomNavigationBar: GestureDetector(
+        bottomNavigationBar: GestureDetector( // A widget to handle the tap event on the Sign Up button.
           onTap: (){
             Navigator.push(context, MaterialPageRoute(builder: (context)=>Registration()));
           },
-          child: Container(
+          child: Container( // A widget to display the Sign Up button.
               height: 25,
               color: Colors.lightBlue,
               child: Center(child: "Create a new Account..! Sign Up".text.white.makeCentered())),

@@ -150,6 +150,7 @@ class _DashboardState extends State<Dashboard> { // A State class to handle the 
               title: Text('Inventory Location'),
               onTap: () {
                 // Update this function to navigate to a different page
+                
               },
             ),
             ListTile( // A list tile for the drawer.
@@ -185,13 +186,27 @@ class _DashboardState extends State<Dashboard> { // A State class to handle the 
             ),
           ),
           SizedBox(height: 20), // Add some space between the image slider and the main content.
-          Center(
-            child: Text( // A text widget to display the current index of the image.
-              'Image $_currentIndex', // The text to display.
-              style: TextStyle(fontSize: 20),
+          Padding(
+            padding: const EdgeInsets.all(8.0), // Add padding to the main content.
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start, // Align the content to the start of the column.
+              children: <Widget>[
+                Center( // Center the text in the column.
+                  child: Text(
+                  "Inventory Manager",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(height: 5),
+                Text(
+                  "Welcome to the Inventory Manager. Here you can manage your inventory and keep track of your items. \nNavigate through the sidebar to access different features.",
+                  style: TextStyle( fontSize: 16),
+                ),
+              ],
             ),
-          ),
-          // Your existing code for the main content of the dashboard
+          )
         ],
       ),
       floatingActionButton: FloatingActionButton( // A floating action button to add a new To-Do.
