@@ -18,17 +18,15 @@ class Dashboard extends StatefulWidget { // A StatefulWidget to display the dash
 class _DashboardState extends State<Dashboard> { // A State class to handle the state of the Dashboard.
   late String userId; // A variable to store the user ID.
   // Create two TextEditingController objects to get the user input for the title and description of the To-Do.
-  TextEditingController _todoTitle = TextEditingController();
-  TextEditingController _todoDesc = TextEditingController();
   List? items;
 
   // Create a variable to store the current index of the image.
   int _currentIndex = 0;
   // Create a list of image URLs.
-  List<String> imageUrls = [
-    'https://via.placeholder.com/200',
-    'https://via.placeholder.com/300',
-    'https://via.placeholder.com/400',
+  List<Image> images = [ // images (directory added to pubspec.yaml)
+    Image.asset('lib/images/warehouse.jpeg'),
+    Image.asset('lib/images/dispatch.jpeg'),
+    Image.asset('lib/images/warehouse-guy.jpeg'),
   ];
 
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>(); // Create a GlobalKey for the Scaffold.
@@ -38,85 +36,6 @@ class _DashboardState extends State<Dashboard> { // A State class to handle the 
     super.initState();
     Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
     userId = jwtDecodedToken['_id'];
-    getTodoList(userId); // Call the getTodoList function to get the list of To-Dos.
-  }
-
-  void addTodo() async { // A function to add a To-Do.
-    if (_todoTitle.text.isNotEmpty && _todoDesc.text.isNotEmpty) {
-      var regBody = {
-        "userId": userId,
-        "title": _todoTitle.text,
-        "desc": _todoDesc.text
-      };
-
-      try { // Try to send a POST request to the API.
-        var response = await http.post(
-          Uri.parse(addtodo),
-          headers: {"Content-Type": "application/json"},
-          body: jsonEncode(regBody),
-        );
-
-        if (response.statusCode == 200) { // Check if the response is OK.
-          var jsonResponse = jsonDecode(response.body);
-          if (jsonResponse is Map && jsonResponse.containsKey('status')) {
-            if (jsonResponse['status']) {
-              _todoDesc.clear();
-              _todoTitle.clear();
-              Navigator.pop(context);
-              getTodoList(userId);
-            } else { // If the response is not OK, print an error message.
-              print("Something went wrong");
-            }
-          } else { // If the response is not OK, print an error message.
-            print("Invalid response format");
-          }
-        } else { // If the response is not OK, print an error message.
-          print('Failed to add todo: ${response.statusCode}');
-        }
-      } catch (e) { // If the response is not OK, print an error message.
-        print('Error adding todo: $e');
-      }
-    }
-  }
-
-  void getTodoList(userId) async { // A function to get the list of To-Dos.
-    var regBody = {"userId": userId};
-
-    try {
-      var response = await http.post( // Send a POST request to the API
-        Uri.parse(getToDoList),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode(regBody),
-      );
-
-      if (response.statusCode == 200) { // Check if the response is OK.
-        var jsonResponse = jsonDecode(response.body);
-        if (jsonResponse is Map && jsonResponse.containsKey('success')) {
-          items = jsonResponse['success'];
-        } else {
-          items = [];
-        }
-      } else { // If the response is not OK, print an error message.
-        print('Failed to fetch todo list: ${response.statusCode}');
-      }
-    } catch (e) { // If the response is not OK, print an error message.
-      print('Error fetching todo list: $e');
-    }
-
-    setState(() {}); // Update the state of the Dashboard.
-  }
-
-  void deleteItem(id) async { // A function to delete a To-Do.
-    var regBody = {"id": id};
-
-    var response = await http.post(Uri.parse(deleteTodo),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode(regBody));
-
-    var jsonResponse = jsonDecode(response.body);
-    if (jsonResponse['status']) {
-      getTodoList(userId);
-    }
   }
 
   @override
@@ -133,38 +52,43 @@ class _DashboardState extends State<Dashboard> { // A State class to handle the 
         ),
       ),
       drawer: Drawer( // A drawer is a panel that slides in from the side of the screen. It is often used to provide navigation options to the user.
+      // reduce the size of the drawer
+        width: MediaQuery.of(context).size.width * 0.2,
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader( // A header for the drawer.
               decoration: BoxDecoration(
                 color: Colors.blue,
+                // reduce the hight of the header
               ),
               child: Text( // A text widget to display the title of the drawer.
                 'Sidebar',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 24,
+                  fontSize: 16,
                 ),
               ),
             ),
-            TextButton(
-              child: Text('Inventory Location'),
+            IconButton( // An icon button to navigate to the Inventory Location page.
+              icon: Icon(Icons.forklift),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => InventoryLocation()),
+                  MaterialPageRoute(builder: (context) => InventoryLocation()), // Navigate to the InventoryLocation page.
                 );
               },
+              tooltip: 'Inventory Location', // A tooltip to display when the user hovers over the icon button.
             ),
-            TextButton(
-              child: Text('Profile'),
+            IconButton( // An icon button to navigate to the Profile page.
+              icon: Icon(Icons.person),
               onPressed: (){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context)=>Profile())
+                  MaterialPageRoute(builder: (context)=>Profile()) // Navigate to the Profile page.
                 );
-              }, 
+              },
+              tooltip: 'Profile', // A tooltip to display when the user hovers over the icon button.
             ),
           ],
         ),
@@ -173,9 +97,9 @@ class _DashboardState extends State<Dashboard> { // A State class to handle the 
         crossAxisAlignment: CrossAxisAlignment.start, // Align the content to the start of the column.
         children: [
           SizedBox(
-            height: 200,
+            height: 275,
             child: PageView.builder(
-              itemCount: imageUrls.length,
+              itemCount: images.length,
               onPageChanged: (index) {
                 setState(() {
                   _currentIndex = index; // Update the current index of the image.
@@ -184,9 +108,13 @@ class _DashboardState extends State<Dashboard> { // A State class to handle the 
               itemBuilder: (context, index) {
                 return Hero( // A hero widget to create a hero animation. (image slider)
                   tag: 'image$index', // A unique tag for the hero widget.
-                  child: Image.network( // An image widget to display the image.
-                    imageUrls[index], // The URL of the image.
-                    fit: BoxFit.cover, // The fit of the image.
+                  child: Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: images[index].image,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                 );
               },
@@ -216,64 +144,6 @@ class _DashboardState extends State<Dashboard> { // A State class to handle the 
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton( // A floating action button to add a new To-Do.
-        onPressed: () => _displayTextInputDialog(context),
-        child: Icon(Icons.add),
-        tooltip: 'Add ToDo',
-      ),
-    );
-  }
-
-  Future<void> _displayTextInputDialog(BuildContext context) async { // A function to display a dialog to add a new To-Do.
-    return showDialog( 
-      context: context,
-      builder: (context) { // Build the dialog.
-        return AlertDialog(
-          title: Text('Add To-Do'), 
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding( // Add padding to the text field.
-                padding: EdgeInsets.all(8.0), // Add padding here
-                child: TextField( 
-                  controller: _todoTitle,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    filled: true, // Fill the text field with a color.
-                    fillColor: Colors.white,
-                    hintText: "Title", 
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)), // Add rounded corners to the text field.
-                    ),
-                  ),
-                ),
-              ),
-              Padding( // Add padding to the text field.
-                padding: EdgeInsets.all(8.0), // Add padding here
-                child: TextField(
-                  controller: _todoDesc,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    hintText: "Description",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    ),
-                  ),
-                ),
-              ),
-              ElevatedButton( // An elevated button to add the To-Do.
-                onPressed: () {
-                  addTodo(); // Call the addTodo function to add the To-Do.
-                  Navigator.pop(context); // Close the dialog.
-                },
-                child: Text("Add"), // The text of the button.
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }
