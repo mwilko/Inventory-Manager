@@ -13,11 +13,11 @@ const userSchema = new Schema({
     email: {
         type: String,
         lowercase: true,
-        required: [true, "userName can't be empty"],
+        required: [true, "email can't be empty"],
         // @ts-ignore
         match: [
             /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
-            "userName format is not correct",
+            "email format is not correct",
         ],
         unique: true,
     },

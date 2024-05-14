@@ -50,11 +50,14 @@ class _SignInPageState extends State<SignInPage> { // A State class to handle th
       var jsonResponse = jsonDecode(response.body); // Decode the response from the API.
       if(jsonResponse['status'] != null && jsonResponse['status']){
           var myToken = jsonResponse['token'];
+          var username = jsonResponse['username']; // Get the username from the response
           prefs.setString('token', myToken);
+          prefs.setString('username', username); // Save the username
           Navigator.push(context, MaterialPageRoute(builder: (context)=>Dashboard(token: myToken)));
       }else{
-        print('Something went wrong');
+          print('Something went wrong');
       }
+
 
     }
   }
@@ -82,7 +85,7 @@ class _SignInPageState extends State<SignInPage> { // A State class to handle th
                 children: <Widget>[
                   //CommonLogo(),
                   HeightBox(10),
-                  "Email Sign-In".text.size(22).yellow100.make(), // A widget to display the title of the SignInPage.
+                  "Email Sign-In".text.size(22).color(Colors.black).make(), // A widget to display the title of the SignInPage.
                   TextField( // A widget to get the user input for the email.
                     controller: usernameController, // Set the controller of the TextField to the emailController.
                     keyboardType: TextInputType.text,
@@ -122,7 +125,7 @@ class _SignInPageState extends State<SignInPage> { // A State class to handle th
                         loginUser(); // Call the loginUser function when the user taps the LogIn button.
                     },
                     child: HStack([ // A widget to display the LogIn button.
-                      VxBox(child: "LogIn".text.white.makeCentered().p16()).green600.roundedLg.make(),
+                      VxBox(child: "LogIn".text.black.makeCentered().p16()).blue400.roundedLg.make(),
                     ]),
                   ),
                 ],

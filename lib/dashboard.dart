@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:http/http.dart' as http;
 import 'config.dart'; // Import the config file
+import 'inventoryLocation.dart'; // Import the InventoryLocation file
+import 'profile.dart'; // Import the Profile file
 
 class Dashboard extends StatefulWidget { // A StatefulWidget to display the dashboard.
   final token; 
@@ -146,18 +148,23 @@ class _DashboardState extends State<Dashboard> { // A State class to handle the 
                 ),
               ),
             ),
-            ListTile( // A list tile for the drawer.
-              title: Text('Inventory Location'),
-              onTap: () {
-                // Update this function to navigate to a different page
-                
+            TextButton(
+              child: Text('Inventory Location'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => InventoryLocation()),
+                );
               },
             ),
-            ListTile( // A list tile for the drawer.
-              title: Text('Profile'),
-              onTap: () {
-                // Update this function to navigate to a different page
-              },
+            TextButton(
+              child: Text('Profile'),
+              onPressed: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context)=>Profile())
+                );
+              }, 
             ),
           ],
         ),

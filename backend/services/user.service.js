@@ -14,17 +14,17 @@ class UserServices{
         }
     }
 
-    static async getUserByEmail(email){
+    static async getUserByUsername(username){
         try{
-            return await UserModel.findOne({email});
+            return await UserModel.findOne({username});
         }catch(err){
             console.log(err);
         }
     }
 
-    static async checkUser(email){
+    static async checkUser(username){
         try {
-            return await UserModel.findOne({email});
+            return await UserModel.findOne({username});
         } catch (error) {
             throw error;
         }
