@@ -1,6 +1,6 @@
 ![Static Badge](https://img.shields.io/badge/build-macos-green)
 
-![GitHub last commit](https://img.shields.io/github/last-commit/mwilko/Mobile_Health_App) ![Static Badge](https://img.shields.io/badge/status-development-yellow)
+![GitHub last commit](https://img.shields.io/github/last-commit/mwilko/Inventory-Manager) ![Static Badge](https://img.shields.io/badge/status-development-yellow)
 # Inventory Manager
 
 This application will be an inventory managing application, where users can see where their products are located as well as lots of details about the respective products.
