@@ -61,7 +61,7 @@ class _RegistrationState extends State<Registration> {
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
             gradient: LinearGradient(
-                colors: [const Color(0XFFF95A3B),const Color(0XFFF96713)],
+                colors: [Color.fromARGB(255, 47, 231, 255),Color.fromARGB(255, 47, 231, 255)],
                 begin: FractionalOffset.topLeft,
                 end: FractionalOffset.bottomCenter,
                 stops: [0.0,0.8],
@@ -75,7 +75,7 @@ class _RegistrationState extends State<Registration> {
                 children: <Widget>[
                   //CommonLogo(),
                   HeightBox(10),
-                  "CREATE YOUR ACCOUNT".text.size(22).yellow100.make(),
+                  "Sign Up!".text.size(22).color(Colors.black).make(), // A widget to display the title of the SignInPage.
                   TextField(
                     controller: usernameController,
                     keyboardType: TextInputType.text,
@@ -128,7 +128,7 @@ class _RegistrationState extends State<Registration> {
                       onTap: ()=>{
                         registerUser()
                       },
-                        child: VxBox(child: "Register".text.white.makeCentered().p16()).green600.roundedLg.make().px16().py16(),
+                        child: VxBox(child: "Register".text.black.makeCentered().p16()).blue400.roundedLg.make().px16().py16(),
                     ),
                   ]), // A GestureDetector to register the user.
                   GestureDetector(

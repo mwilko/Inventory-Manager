@@ -7,26 +7,25 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  SharedPreferences? prefs;
-  String? username;
+  late Future<String?> _usernameFuture; // Future to hold the username
 
   @override
   void initState() {
     super.initState();
-    initializePrefs(); // Call the function to initialize SharedPreferences
+    _usernameFuture = _initializePrefs(); // Initialize SharedPreferences and retrieve the username
   }
 
-  // Function to initialize SharedPreferences
-  Future<void> initializePrefs() async {
-    prefs = await SharedPreferences.getInstance(); // Get SharedPreferences instance
-    // Retrieve the username from SharedPreferences
-    username = prefs?.getString('username'); 
+  // Function to initialize SharedPreferences and retrieve the username
+  Future<String?> _initializePrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance(); // Get SharedPreferences instance
+    return prefs.getString('username'); // Retrieve the username
   }
 
   // Function to log out
-  Future<void> logout() async {
-    await prefs?.remove('username'); // Remove username from SharedPreferences
-    await prefs?.remove('token'); // Remove token from SharedPreferences
+  Future<void> _logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('username'); // Remove username from SharedPreferences
+    await prefs.remove('token'); // Remove token from SharedPreferences
     Navigator.pushReplacementNamed(context, '/login'); // Navigate to login page
   }
 
@@ -38,17 +37,31 @@ class _ProfileState extends State<Profile> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.logout),
-            onPressed: logout, // Call logout function when logout button is pressed
+            onPressed: _logout, // Call logout function when logout button is pressed
           ),
         ],
       ),
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text('Username: $username'), // Display the username
-          ),
-        ],
+      body: FutureBuilder<String?>(
+        future: _usernameFuture, // Use the Future holding the username
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator()); // Display a loading indicator while waiting for SharedPreferences initialization
+          } else {
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}')); // Display an error message if SharedPreferences initialization fails
+            } else {
+              String? username = snapshot.data; // Retrieve the username from the snapshot
+              return Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Username: ${username ?? "Unknown"}'), // Display the username or a default value if it's null
+                  ),
+                ],
+              );
+            }
+          }
+        },
       ),
     );
   }
