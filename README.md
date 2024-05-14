@@ -13,7 +13,7 @@ This application will be an inventory managing application, where users can see 
 ## App Technologies:
 - Flutter: To develop and deploy this application will be utilising the framework Flutter and Dart released by Google.
 - NodeJS: Backend would be assisted with NodeJS, API Endpoints would be created to allow the user to easily create, read, update and delete data from the database.
-- MongoDB Atlas: NoSQL database management system of MongoDB Atlas which is a cloud based plan for MonogDB.
+- MongoDB Atlas: NoSQL database management system of MongoDB Atlas which is a cloud based plan for MongoDB.
 
 ## How to Install:
 
