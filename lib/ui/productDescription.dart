@@ -6,6 +6,7 @@ class ProductDescription extends StatelessWidget { // ProductDescription widget 
   final List<String> category;
   final String location;
   final int quantity;
+  final int productId;
 
   ProductDescription({ // Constructor to initialize the product details
     required this.productName,
@@ -13,9 +14,10 @@ class ProductDescription extends StatelessWidget { // ProductDescription widget 
     required this.category,
     required this.location,
     required this.quantity,
+    required this.productId,
   });
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { // Build the UI of the ProductDescription widget
     return Scaffold(
       appBar: AppBar(
         title: Text('Product Description'),
@@ -25,32 +27,37 @@ class ProductDescription extends StatelessWidget { // ProductDescription widget 
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
+            Text( // Display the product details
               'Product Name: $productName',
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8.0),
-            Text(
+            Text( // Display the product details
               'Manufacturer: $manufacturer',
               style: TextStyle(fontSize: 16.0),
             ),
             SizedBox(height: 8.0),
-            Text(
+            Text( // Display the product details
               'Category: ${category.join(', ')}',
               style: TextStyle(fontSize: 16.0),
             ),
             SizedBox(height: 8.0),
-            Text(
+            Text( // Display the product details
               'Location: $location',
               style: TextStyle(fontSize: 16.0),
             ),
             SizedBox(height: 8.0),
-            Text(
+            Text( // Display the product details
               'Quantity: $quantity',
               style: TextStyle(fontSize: 16.0),
             ),
+            SizedBox(height: 8.0),
+            Text( // Display the product details
+              'Product ID: $productId',
+              style: TextStyle(fontSize: 16.0),
+            ),
             SizedBox(height: 16.0),
-            ElevatedButton(
+            ElevatedButton( // Add a button to navigate back to the previous page
               onPressed: () {
                 Navigator.pop(context);
               },

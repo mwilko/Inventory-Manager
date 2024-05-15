@@ -1,10 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:http/http.dart' as http;
-import '../api/config.dart'; // Import the config file
 import 'inventoryLocation.dart'; // Import the InventoryLocation file
 import 'profile.dart'; // Import the Profile file
+import 'moveInventory.dart'; // Import the MoveInventory file
+import 'addInventory.dart'; // Import the AddInventory file
 
 class Dashboard extends StatefulWidget { // A StatefulWidget to display the dashboard.
   final token; 
@@ -71,7 +70,7 @@ class _DashboardState extends State<Dashboard> { // A State class to handle the 
               ),
             ),
             IconButton( // An icon button to navigate to the Inventory Location page.
-              icon: Icon(Icons.forklift),
+              icon: Icon(Icons.pallet),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -79,6 +78,26 @@ class _DashboardState extends State<Dashboard> { // A State class to handle the 
                 );
               },
               tooltip: 'Inventory Location', // A tooltip to display when the user hovers over the icon button.
+            ),
+            IconButton(
+              icon: Icon(Icons.forklift),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MoveInventory()), // Navigate to the Profile page.
+                );
+              },
+              tooltip: 'Move Inventory', // A tooltip to display when the user hovers over the icon button.
+            ),
+            IconButton(
+              icon: Icon(Icons.add_box),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddInventory()), // Navigate to the Profile page.
+                );
+              },
+              tooltip: 'Add Inventory', // A tooltip to display when the user hovers over the icon button.
             ),
             IconButton( // An icon button to navigate to the Profile page.
               icon: Icon(Icons.person),

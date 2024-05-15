@@ -70,12 +70,12 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                         SizedBox(height: 6),
-                        Text(
+                        Text( // Display the username
                           username ?? 'Unknown', // Display the username
                           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 8),
-                        Text(
+                        Text( // Display a welcome message
                           'Welcome to your profile!',
                           style: TextStyle(fontSize: 16),
                         ),
@@ -96,14 +96,14 @@ class _ProfileState extends State<Profile> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text('Username:'),
-                                      Text(username ?? 'Unknown'),
+                                      Text(username ?? 'Unknown'), // Display the username
                                     ],
                                     ),
                                     Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text('Email:'),
-                                      Text(email ?? 'Unknown'),
+                                      Text(email ?? 'Unknown'), // Display the email
                                     ],
                                     ),
                                   ],

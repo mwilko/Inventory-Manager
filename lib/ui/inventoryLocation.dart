@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'productDescription.dart';
+import '/api/config.dart';
 
 class Product { // Product class to store product details
   final String productName;
@@ -9,6 +10,7 @@ class Product { // Product class to store product details
   final List<String> category;
   final String location;
   final int quantity;
+  final int productId;
 
   Product({ // Constructor to initialize the product details + ensure they are required
     required this.productName,
@@ -16,6 +18,7 @@ class Product { // Product class to store product details
     required this.category,
     required this.location,
     required this.quantity,
+    required this.productId,
   });
 }
 
@@ -29,7 +32,7 @@ class _InventoryLocationState extends State<InventoryLocation> {
   List<Product> _products = []; // List to store the products
 
   Future<void> _searchInventory(String location) async { // Function to search inventory based on location
-    final response = await http.get(Uri.parse('http://localhost:3000/products?location=$location'));
+    final response = await http.get(Uri.parse(getInventory+'$location')); // Send a GET request to the API
     if (response.statusCode == 200) { // Check if the response is successful
       final List<dynamic> jsonData = json.decode(response.body);
       
@@ -50,13 +53,16 @@ class _InventoryLocationState extends State<InventoryLocation> {
           category = [categoryData.toString()];
         }
 
+        print("Product ID is: ${productData['product_id']}"); // Print the product ID (for debugging purposes
+
         final product = Product( // Create a Product object
           productName: productData['product_name'], // Get the product name
           manufacturer: productData['manufacturer'], // Get the manufacturer
           category: category, // Get the category
           location: productData['location'], // Get the location
           quantity: int.parse(productData['quantity'].toString()), // Convert the quantity to an integer
-        );
+          productId: int.parse(productData['product_id'].toString()), // Get the product ID and convert it to an integer
+          );
         setState(() { // Update the state with the new product
           _products.add(product);
         });
@@ -127,6 +133,7 @@ class _InventoryLocationState extends State<InventoryLocation> {
                               category: _products[index].category,
                               location: _products[index].location,
                               quantity: _products[index].quantity,
+                              productId: _products[index].productId,
                             ),
                           ),
                         );
