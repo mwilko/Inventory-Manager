@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'productDescription.dart';
 
 class Product { // Product class to store product details
   final String productName;
   final String manufacturer;
   final List<String> category;
   final String location;
+  final int quantity;
 
   Product({ // Constructor to initialize the product details + ensure they are required
     required this.productName,
     required this.manufacturer,
     required this.category,
     required this.location,
+    required this.quantity,
   });
 }
 
@@ -52,6 +55,7 @@ class _InventoryLocationState extends State<InventoryLocation> {
           manufacturer: productData['manufacturer'], // Get the manufacturer
           category: category, // Get the category
           location: productData['location'], // Get the location
+          quantity: int.parse(productData['quantity'].toString()), // Convert the quantity to an integer
         );
         setState(() { // Update the state with the new product
           _products.add(product);
@@ -114,8 +118,18 @@ class _InventoryLocationState extends State<InventoryLocation> {
                     trailing: IconButton(
                       icon: Icon(Icons.description), // Description button
                       onPressed: () {
-                        // TODO: show the product details in a seperate page
-
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductDescription(
+                              productName: _products[index].productName,
+                              manufacturer: _products[index].manufacturer,
+                              category: _products[index].category,
+                              location: _products[index].location,
+                              quantity: _products[index].quantity,
+                            ),
+                          ),
+                        );
                       },
                     ),
                   ),
