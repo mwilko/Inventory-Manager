@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:http/http.dart' as http;
-import 'config.dart'; // Import the config file
+import '../api/config.dart'; // Import the config file
 import 'inventoryLocation.dart'; // Import the InventoryLocation file
 import 'profile.dart'; // Import the Profile file
 
@@ -24,9 +24,9 @@ class _DashboardState extends State<Dashboard> { // A State class to handle the 
   int _currentIndex = 0;
   // Create a list of image URLs.
   List<Image> images = [ // images (directory added to pubspec.yaml)
-    Image.asset('lib/images/warehouse.jpeg'),
-    Image.asset('lib/images/dispatch.jpeg'),
-    Image.asset('lib/images/warehouse-guy.jpeg'),
+    Image.asset('images/warehouse.jpeg'),
+    Image.asset('images/dispatch.jpeg'),
+    Image.asset('images/warehouse-guy.jpeg'),
   ];
 
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>(); // Create a GlobalKey for the Scaffold.

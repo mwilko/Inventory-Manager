@@ -3,7 +3,6 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const userRouter = require('./routers/user.router');
 const productRouter = require('./routers/product.router');
-const ToDoRoute = require('./routers/todo.router');
 
 const app = express();
 
@@ -16,8 +15,5 @@ app.use('/', userRouter);
 
 // Use the product router for handling product-related routes
 app.use('/', productRouter);
-
-// Use the ToDo router for handling ToDo-related routes
-app.use('/', ToDoRoute);
 
 module.exports = app;

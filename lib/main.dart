@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:inventory_manager/dashboard.dart';
+import 'ui/dashboard.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'loginPage.dart';
+import 'ui/loginPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

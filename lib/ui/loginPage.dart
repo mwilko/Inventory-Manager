@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:inventory_manager/dashboard.dart';
-import 'package:inventory_manager/registration.dart';
+import 'dashboard.dart';
+import 'registration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:http/http.dart' as http;
-import 'config.dart';
+import '../api/config.dart';
 
 class SignInPage extends StatefulWidget { // Sign-in page
   @override

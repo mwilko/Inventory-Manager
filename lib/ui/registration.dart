@@ -7,7 +7,7 @@ import 'package:velocity_x/velocity_x.dart';
 //import 'applogo.dart';
 import 'loginPage.dart';
 import 'package:http/http.dart' as http;
-import 'config.dart';
+import '../api/config.dart';
 
 class Registration extends StatefulWidget { // A StatefulWidget to register the user.
   @override
