@@ -19,7 +19,7 @@ class _MoveInventoryState extends State<_MoveInventoryForm> { // MoveInventorySt
   TextEditingController _locationController = TextEditingController();
   bool _isNotValidate = false;
 
-  Future<void> createInventory() async { // Function to move inventory
+  Future<void> relocateInventory() async { // Function to move inventory
     var response = await http.post(
       Uri.parse(moveInventory),
       body: {
@@ -119,7 +119,7 @@ class _MoveInventoryState extends State<_MoveInventoryForm> { // MoveInventorySt
             ),
             ElevatedButton( // Add a button to move the inventory
               onPressed: () {
-                createInventory(); // Call the createInventory function
+                relocateInventory(); // Call the createInventory function
               },
               child: Text('Move Inventory'),
             ),

@@ -5,9 +5,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'ui/loginPage.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  runApp(MyApp(token: prefs.getString('token')));
+  WidgetsFlutterBinding.ensureInitialized(); // Ensure that the Flutter app is initialized
+  SharedPreferences prefs = await SharedPreferences.getInstance(); // Get SharedPreferences instance
+  runApp(MyApp(token: prefs.getString('token'))); // if the user has logged in recently, the token will be stored in the SharedPreferences
 }
 
 class MyApp extends StatelessWidget {
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { // Build the main application widget
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,

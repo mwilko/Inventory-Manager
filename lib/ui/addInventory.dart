@@ -15,7 +15,10 @@ class _AddInventoryForm extends StatefulWidget { // AddInventoryForm widget to c
 }
 
 class _AddInventoryState extends State<_AddInventoryForm> { // AddInventoryState widget to create new inventory
-  TextEditingController _nameController = TextEditingController();
+  TextEditingController _productNameController = TextEditingController();
+  TextEditingController _manufacturerController = TextEditingController();
+  TextEditingController _categoryController = TextEditingController();
+  TextEditingController _locationController = TextEditingController();
   TextEditingController _quantityController = TextEditingController();
   bool _isNotValidate = false;
 
@@ -23,9 +26,11 @@ class _AddInventoryState extends State<_AddInventoryForm> { // AddInventoryState
     var response = await http.post(
       Uri.parse(addInventory), // Send a POST request to the API
       body: {
-        'name': _nameController.text,
+        'product_name': _productNameController.text,
+        'manufacturer': _manufacturerController.text,
+        'category': _categoryController.text,
+        'location': _locationController.text,
         'quantity': _quantityController.text,
-        // Add more fields as needed
       },
     );
 
@@ -69,7 +74,7 @@ class _AddInventoryState extends State<_AddInventoryForm> { // AddInventoryState
             Padding( // Add text field for product name
               padding: const EdgeInsets.all(8.0),
               child: TextField(
-                controller: _nameController,
+                controller: _productNameController,
                 decoration: InputDecoration(
                   labelText: 'Product Name',
                   border: OutlineInputBorder(),
@@ -79,7 +84,7 @@ class _AddInventoryState extends State<_AddInventoryForm> { // AddInventoryState
             Padding( // Add text field for manufacturer
               padding: const EdgeInsets.all(8.0),
               child: TextField(
-                controller: _quantityController,
+                controller: _manufacturerController,
                 decoration: InputDecoration(
                   labelText: 'Manufacturer',
                   border: OutlineInputBorder(),
@@ -89,7 +94,7 @@ class _AddInventoryState extends State<_AddInventoryForm> { // AddInventoryState
             Padding( // Add text field for category
               padding: const EdgeInsets.all(8.0),
               child: TextField(
-                controller: _quantityController,
+                controller: _categoryController,
                 decoration: InputDecoration(
                   labelText: 'Category/Categories',
                   border: OutlineInputBorder(),
@@ -99,7 +104,7 @@ class _AddInventoryState extends State<_AddInventoryForm> { // AddInventoryState
             Padding( // Add text field for location
               padding: const EdgeInsets.all(8.0),
               child: TextField(
-                controller: _quantityController,
+                controller: _locationController,
                 decoration: InputDecoration(
                   labelText: 'Location',
                   border: OutlineInputBorder(),

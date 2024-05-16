@@ -1,6 +1,6 @@
 const UserServices = require('../services/user.service');
 
-exports.register = async (req, res, next) => {
+exports.register = async (req, res, next) => { // This function is used to add a product to the inventory
     try {
         console.log("---req body---", req.body);
         const { username, email, password } = req.body;
@@ -19,7 +19,7 @@ exports.register = async (req, res, next) => {
     }
 }
 
-exports.login = async (req, res, next) => {
+exports.login = async (req, res, next) => { // This function is used to move a product to a different location
     try {
 
         const { username, email, password } = req.body;
