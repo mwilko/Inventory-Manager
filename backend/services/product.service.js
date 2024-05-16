@@ -1,6 +1,7 @@
 const ProductModel =  require("../models/product.model");
 
 class ProductServices { // This class is used to interact with the database
+
     static async addInventory(product_name, manufacturer, catagory, location, quantity) { // product_id isnt passed because its auto generated
         try {
             const createProduct = new ProductModel.addInventory({ product_name, manufacturer, catagory, location, quantity});
@@ -20,13 +21,16 @@ class ProductServices { // This class is used to interact with the database
         }
     }
 
-    static async getInventory() {
+    static async getInventory(location) { // location is passed to find products in that location
         try {
-            return await ProductModel.find();
-        } catch (err) {
-            console.log(err);
+            const products = await ProductModel.find({ location }); // Get all products from the database based on location
+            return products; // Return the products
+        } catch (error) {
+            throw error; // Throw any errors encountered
         }
     }
+}
+    module.exports = ProductServices;
 
     // static async getProductById(product_id) {
     //     try {
@@ -51,4 +55,3 @@ class ProductServices { // This class is used to interact with the database
     //         console.log(err);
     //     }
     // }
-}

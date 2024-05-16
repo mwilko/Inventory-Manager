@@ -4,4 +4,4 @@ final registration = url + "register"; // The registration endpoint
 final login = url + 'login'; // The login endpoint
 final addInventory = url + 'addInventory'; // The add inventory endpoint
 final moveInventory = url + 'moveInventory'; // The move inventory endpoint
-final getInventory = url + 'products?location='; // The get inventory endpoint
+final getInventory = url + 'getInventory?location='; // The get inventory endpoint

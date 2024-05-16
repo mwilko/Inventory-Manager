@@ -12,7 +12,7 @@ class Product { // Product class to store product details
   final int quantity;
   final int productId;
 
-  Product({ // Constructor to initialize the product details + ensure they are required
+  Product({ // Product constructor
     required this.productName,
     required this.manufacturer,
     required this.category,
@@ -22,58 +22,64 @@ class Product { // Product class to store product details
   });
 }
 
-class InventoryLocation extends StatefulWidget {
+class InventoryLocation extends StatefulWidget { // InventoryLocation widget to search inventory
   @override
   _InventoryLocationState createState() => _InventoryLocationState();
 }
 
-class _InventoryLocationState extends State<InventoryLocation> {
-  TextEditingController _locationController = TextEditingController(); // Controller for the location input field
-  List<Product> _products = []; // List to store the products
+class _InventoryLocationState extends State<InventoryLocation> { // InventoryLocationState widget to search inventory
+  TextEditingController _locationController = TextEditingController();
+  List<Product> _products = [];
 
-  Future<void> _searchInventory(String location) async { // Function to search inventory based on location
-    final response = await http.get(Uri.parse(getInventory+'$location')); // Send a GET request to the API
-    if (response.statusCode == 200) { // Check if the response is successful
-      final List<dynamic> jsonData = json.decode(response.body);
-      
-      setState(() { // Clear the existing products list
-        _products.clear();
-      });
+  Future<void> _searchInventory(String location) async { // Function to search inventory
+    final response = await http.get(Uri.parse(getInventory + '$location'));
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonData = json.decode(response.body);
 
-      for (int i = 0; i < jsonData.length; i++) { // Loop through the response data and add products to the list
-        final productData = jsonData[i]; // Get the product data
-        final categoryData = productData['category']; // Get the category data
-        List<String> category; // Initialize an empty list to store the category
-        
-        if (categoryData is List) { // Check if the category data is a list
-          // Handle category as a list of strings
-          category = List<String>.from(categoryData);
-        } else { // If the category data is not a list
-          // Handle category as a single string
-          category = [categoryData.toString()];
-        }
+      if (jsonData != null && jsonData.containsKey('data')) { // Check if the response contains data
+        final List<dynamic> productList = jsonData['data'];
 
-        print("Product ID is: ${productData['product_id']}"); // Print the product ID (for debugging purposes
-
-        final product = Product( // Create a Product object
-          productName: productData['product_name'], // Get the product name
-          manufacturer: productData['manufacturer'], // Get the manufacturer
-          category: category, // Get the category
-          location: productData['location'], // Get the location
-          quantity: int.parse(productData['quantity'].toString()), // Convert the quantity to an integer
-          productId: int.parse(productData['product_id'].toString()), // Get the product ID and convert it to an integer
-          );
-        setState(() { // Update the state with the new product
-          _products.add(product);
+        setState(() {
+          _products.clear(); // Clear the products list
         });
+
+        for (int i = 0; i < productList.length; i++) { // Loop through the product list
+          final productData = productList[i];
+          final categoryData = productData['category'];
+          List<String> category;
+
+          if (categoryData is List) { // Check if the category data is a list
+            category = List<String>.from(categoryData);
+          } else {
+            category = [categoryData.toString()];
+          }
+
+          print("Product ID is: ${productData['product_id']}"); // debug print statement
+
+          final product = Product( // Create a new product object
+            productName: productData['product_name'],
+            manufacturer: productData['manufacturer'],
+            category: category,
+            location: productData['location'],
+            quantity: int.parse(productData['quantity'].toString()),
+            productId: int.parse(productData['product_id'].toString()),
+          );
+          setState(() {
+            _products.add(product); // Add the product to the products list
+          });
+        }
       }
     } else {
-      showDialog( // Display an error dialog if the search fails
+      print('Failed to search inventory: ${response.statusCode}'); // debug print statement
+      print('Location: $location'); // debug print statement
+      print(response.body); // debug print statement
+      showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
+          return AlertDialog( // Show an error dialog if the inventory search fails
             title: Text('Error'),
-            content: Text('Failed to search inventory \n\nNo products found in the location $location.'),
+            content: Text(
+                'Failed to search inventory \n\nNo products found in the location $location.'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
@@ -89,45 +95,47 @@ class _InventoryLocationState extends State<InventoryLocation> {
   }
 
   @override
-  Widget build(BuildContext context) { // Build the UI
+  Widget build(BuildContext context) { // Build the UI for the Inventory Location page
     return Scaffold(
-      appBar: AppBar( // Display the app bar
+      appBar: AppBar(
         title: Text('Inventory Management'),
       ),
-      body: Column( // Display the search input field and the list of products
+      body: Column(
         children: <Widget>[
-          Padding(
+          Padding( 
             padding: const EdgeInsets.all(8.0),
-            child: TextField( // Input field to enter the location filter
-              controller: _locationController, 
-              decoration: InputDecoration( 
-                labelText: 'Enter Location Filter', // Label for the input field
-                suffixIcon: IconButton( // Search button
+            child: TextField( // Add a text field for the location filter
+              controller: _locationController,
+              decoration: InputDecoration(
+                labelText: 'Enter Location Filter',
+                suffixIcon: IconButton(
                   icon: Icon(Icons.search),
                   onPressed: () {
-                    _searchInventory(_locationController.text); // Call the search inventory function
+                    _searchInventory(_locationController.text);
                   },
                 ),
               ),
             ),
           ),
-          Expanded( // Display the list of products
+          Expanded(
             child: ListView.builder(
-              itemCount: _products.length, // Number of products in the list
-              itemBuilder: (context, index) { // Build the list item
-                return Card( // Display the product details in a card
+              itemCount: _products.length,
+              itemBuilder: (context, index) {
+                return Card(
                   elevation: 3,
-                  margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  child: ListTile( // Display the product name, category, and description button.
-                    title: Text(_products[index].productName), // title being the product name
-                    subtitle: Text(_products[index].category.toString()), // subtitle being the category
+                  margin:
+                      EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  child: ListTile(
+                    title: Text(_products[index].productName), // Display the product name
+                    subtitle: Text(_products[index].category.toString()), // Display the product category
                     trailing: IconButton(
-                      icon: Icon(Icons.description), // Description button
+                      icon: Icon(Icons.description),
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ProductDescription(
+                            builder: (context) => ProductDescription( // Navigate to the Product Description page
+                              // Product details passed to the Product Description page
                               productName: _products[index].productName,
                               manufacturer: _products[index].manufacturer,
                               category: _products[index].category,

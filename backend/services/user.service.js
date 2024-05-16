@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 class UserServices{
  
-    static async registerUser(username, email,password){
+    static async registerUser(username, email, password){ // This function is used to add a product to the inventory
         try{
                 console.log("-----Username --- Email --- Password-----",username,email,password);
                 
@@ -14,7 +14,7 @@ class UserServices{
         }
     }
 
-    static async getUserByEmail(email){
+    static async getUserByEmail(email){ // This function is used to get a product from the inventory
         try{
             return await UserModel.findOne({email});
         }catch(err){
@@ -22,7 +22,7 @@ class UserServices{
         }
     }
 
-    static async checkUser(email){
+    static async checkUser(email){ // This function is used to get a product from the inventory
         try {
             return await UserModel.findOne({email});
         } catch (error) {
@@ -30,9 +30,9 @@ class UserServices{
         }
     }
 
-    static async generateAccessToken(tokenData,JWTSecret_Key,JWT_EXPIRE){
+    static async generateAccessToken(tokenData,JWTSecret_Key,JWT_EXPIRE){ // Creates token for login
         return jwt.sign(tokenData, JWTSecret_Key, { expiresIn: JWT_EXPIRE });
     }
 }
 
-module.exports = UserServices;
+module.exports = UserServices; 
