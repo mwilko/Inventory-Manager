@@ -23,8 +23,8 @@ class _DashboardState extends State<Dashboard> { // Change the class to a State<
 
   int _currentIndex = 0;
   List<Image> images = [ // Create a list of Image widgets
-    Image.asset('images/warehouse.jpeg'),
     Image.asset('images/dispatch.jpeg'),
+    Image.asset('images/inv-manager-hero1.jpeg'),
     Image.asset('images/warehouse-guy.jpeg'),
   ];
 
@@ -49,16 +49,16 @@ class _DashboardState extends State<Dashboard> { // Change the class to a State<
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar( // Add a leading icon button to open the drawer
-        title: Text('Dashboard'),
         leading: IconButton(
           icon: Icon(Icons.menu),
           onPressed: () {
-            _scaffoldKey.currentState!.openDrawer();
+        _scaffoldKey.currentState!.openDrawer();
           },
         ),
       ),
       drawer: Drawer(
         width: MediaQuery.of(context).size.width * 0.2,
+        backgroundColor: Colors.grey[300],
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
@@ -69,7 +69,7 @@ class _DashboardState extends State<Dashboard> { // Change the class to a State<
               child: Text( // Display the sidebar title
                 'Sidebar',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontSize: 16,
                 ),
               ),
@@ -83,6 +83,7 @@ class _DashboardState extends State<Dashboard> { // Change the class to a State<
                 );
               },
               tooltip: 'Inventory Location',
+              color: Colors.black,
             ),
             IconButton( // Move Inventory button
               icon: Icon(Icons.forklift),
@@ -93,6 +94,7 @@ class _DashboardState extends State<Dashboard> { // Change the class to a State<
                 );
               },
               tooltip: 'Move Inventory',
+              color: Colors.black,
             ),
             IconButton( // Add Inventory button
               icon: Icon(Icons.add_box),
@@ -103,6 +105,7 @@ class _DashboardState extends State<Dashboard> { // Change the class to a State<
                 );
               },
               tooltip: 'Add Inventory',
+              color: Colors.black,
             ),
             IconButton( // Profile button
               icon: Icon(Icons.person),
@@ -113,6 +116,7 @@ class _DashboardState extends State<Dashboard> { // Change the class to a State<
                 );
               },
               tooltip: 'Profile',
+              color: Colors.black,
             ),
           ],
         ),
@@ -159,11 +163,15 @@ class _DashboardState extends State<Dashboard> { // Change the class to a State<
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text( // Display a welcome message
-                        "Welcome back, $username! \u270B", // Display the username with hand emoji
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                      Padding(
+                        padding: EdgeInsets.only(left: 30.0),
+                        child: Text( // Display a welcome message
+                          "Welcome back, $username! \u270B", // Display the username with hand emoji
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                       SizedBox(height: 12),
@@ -173,13 +181,28 @@ class _DashboardState extends State<Dashboard> { // Change the class to a State<
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
+                            color: Colors.black
                           ),
                         ),
                       ),
                       SizedBox(height: 5),
-                      Text( // Display the description
-                        "Welcome to the Inventory Manager. Here you can manage your inventory and keep track of your items. \nNavigate through the sidebar to access different features.",
-                        style: TextStyle(fontSize: 16),
+                      Row(
+                        children: [
+                            Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Text( // Display the description
+                              "Welcome to the Inventory Manager. Here you can manage your inventory and keep track of your items. \n\nNavigate through the sidebar to access different features.",
+                              style: TextStyle(fontSize: 16, color: Colors.black), // Set the text color to white
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Text(
+                              "Message of the Day: \n\n\"The best way to predict the future is to create it.\" - Peter Drucker",
+                              style: TextStyle(fontSize: 16, color: Colors.black), // Set the text color to white
+                            )
+                          ),
+                        ],
                       ),
                     ],
                   ),
