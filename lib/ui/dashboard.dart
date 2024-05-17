@@ -4,44 +4,51 @@ import 'inventoryLocation.dart'; // Import the InventoryLocation file
 import 'profile.dart'; // Import the Profile file
 import 'moveInventory.dart'; // Import the MoveInventory file
 import 'addInventory.dart'; // Import the AddInventory file
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Dashboard extends StatefulWidget { // A StatefulWidget to display the dashboard.
-  final token; 
-  
-  const Dashboard({@required this.token, Key? key}) : super(key: key);
+class Dashboard extends StatefulWidget { // Change the class to a StatefulWidget
+  final String token;
+
+  const Dashboard({required this.token, Key? key}) : super(key: key);
 
   @override
-  State<Dashboard> createState() => _DashboardState(); // Return the state of the Dashboard.
+  State<Dashboard> createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> { // A State class to handle the state of the Dashboard.
-  late String userId; // A variable to store the user ID.
-  // Create two TextEditingController objects to get the user input for the title and description of the To-Do.
+class _DashboardState extends State<Dashboard> { // Change the class to a State<Dashboard>
+  late String userId;
+  late Future<Map<String, String>> _usernameFuture;
+
   List? items;
 
-  // Create a variable to store the current index of the image.
   int _currentIndex = 0;
-  // Create a list of image URLs.
-  List<Image> images = [ // images (directory added to pubspec.yaml)
+  List<Image> images = [ // Create a list of Image widgets
     Image.asset('images/warehouse.jpeg'),
     Image.asset('images/dispatch.jpeg'),
     Image.asset('images/warehouse-guy.jpeg'),
   ];
 
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>(); // Create a GlobalKey for the Scaffold.
-
   @override
-  void initState() { // A function to initialize the state of the Dashboard.
+  void initState() { // Initialize the userId and _usernameFuture
     super.initState();
     Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
     userId = jwtDecodedToken['_id'];
+    _usernameFuture = _initializePrefs();
   }
 
+  Future<Map<String, String>> _initializePrefs() async { // Initialize SharedPreferences and retrieve the username
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? username = prefs.getString('username');
+    return {'username': username ?? ''};
+  }
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
-  Widget build(BuildContext context) { // Build the UI of the Dashboard.
+  Widget build(BuildContext context) { // Update the UI to display the dashboard
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
+      appBar: AppBar( // Add a leading icon button to open the drawer
         title: Text('Dashboard'),
         leading: IconButton(
           icon: Icon(Icons.menu),
@@ -50,18 +57,16 @@ class _DashboardState extends State<Dashboard> { // A State class to handle the 
           },
         ),
       ),
-      drawer: Drawer( // A drawer is a panel that slides in from the side of the screen. It is often used to provide navigation options to the user.
-      // reduce the size of the drawer
+      drawer: Drawer(
         width: MediaQuery.of(context).size.width * 0.2,
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader( // A header for the drawer.
+            DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
-                // reduce the hight of the header
               ),
-              child: Text( // A text widget to display the title of the drawer.
+              child: Text( // Display the sidebar title
                 'Sidebar',
                 style: TextStyle(
                   color: Colors.white,
@@ -69,99 +74,120 @@ class _DashboardState extends State<Dashboard> { // A State class to handle the 
                 ),
               ),
             ),
-            IconButton( // An icon button to navigate to the Inventory Location page.
+            IconButton( // Inventory Location button
               icon: Icon(Icons.pallet),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => InventoryLocation()), // Navigate to the InventoryLocation page.
+                  MaterialPageRoute(builder: (context) => InventoryLocation()),
                 );
               },
-              tooltip: 'Inventory Location', // A tooltip to display when the user hovers over the icon button.
+              tooltip: 'Inventory Location',
             ),
-            IconButton(
+            IconButton( // Move Inventory button
               icon: Icon(Icons.forklift),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => MoveInventory()), // Navigate to the Profile page.
+                  MaterialPageRoute(builder: (context) => MoveInventory()),
                 );
               },
-              tooltip: 'Move Inventory', // A tooltip to display when the user hovers over the icon button.
+              tooltip: 'Move Inventory',
             ),
-            IconButton(
+            IconButton( // Add Inventory button
               icon: Icon(Icons.add_box),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddInventory()), // Navigate to the Profile page.
+                  MaterialPageRoute(builder: (context) => AddInventory()),
                 );
               },
-              tooltip: 'Add Inventory', // A tooltip to display when the user hovers over the icon button.
+              tooltip: 'Add Inventory',
             ),
-            IconButton( // An icon button to navigate to the Profile page.
+            IconButton( // Profile button
               icon: Icon(Icons.person),
-              onPressed: (){
+              onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context)=>Profile()) // Navigate to the Profile page.
+                  MaterialPageRoute(builder: (context) => Profile()),
                 );
               },
-              tooltip: 'Profile', // A tooltip to display when the user hovers over the icon button.
+              tooltip: 'Profile',
             ),
           ],
         ),
       ),
-      body: Column( // A column widget to display the main content of the dashboard.
-        crossAxisAlignment: CrossAxisAlignment.start, // Align the content to the start of the column.
-        children: [
-          SizedBox(
-            height: 275,
-            child: PageView.builder(
-              itemCount: images.length,
-              onPageChanged: (index) {
-                setState(() {
-                  _currentIndex = index; // Update the current index of the image.
-                });
-              },
-              itemBuilder: (context, index) {
-                return Hero( // A hero widget to create a hero animation. (image slider)
-                  tag: 'image$index', // A unique tag for the hero widget.
-                  child: Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: images[index].image,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          SizedBox(height: 20), // Add some space between the image slider and the main content.
-          Padding(
-            padding: const EdgeInsets.all(8.0), // Add padding to the main content.
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start, // Align the content to the start of the column.
-              children: <Widget>[
-                Center( // Center the text in the column.
-                  child: Text(
-                  "Inventory Manager",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold),
+      body: FutureBuilder<Map<String, String>>( // Update FutureBuilder to use Map<String, String>
+        future: _usernameFuture,
+        builder: (context, snapshot) { // Update the FutureBuilder builder
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) { // Display an error message if SharedPreferences initialization fails
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else { // Retrieve the username from the snapshot map
+            String username = snapshot.data?['username'] ?? 'Unknown';
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox( // Display the PageView with images
+                  height: 275,
+                  child: PageView.builder(
+                    itemCount: images.length,
+                    onPageChanged: (index) {
+                      setState(() {
+                        _currentIndex = index; // Update the current index when the page changes
+                      });
+                    },
+                    itemBuilder: (context, index) {
+                      return Hero( // Add a Hero widget to the image
+                        tag: 'image$index', // Set a unique tag for each image
+                        child: Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: images[index].image, // Display the image
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
-                SizedBox(height: 5),
-                Text(
-                  "Welcome to the Inventory Manager. Here you can manage your inventory and keep track of your items. \nNavigate through the sidebar to access different features.",
-                  style: TextStyle( fontSize: 16),
+                SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text( // Display a welcome message
+                        "Welcome back, $username! \u270B", // Display the username with hand emoji
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 12),
+                      Center( 
+                        child: Text( // Display the title
+                          "Inventory Manager",
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Text( // Display the description
+                        "Welcome to the Inventory Manager. Here you can manage your inventory and keep track of your items. \nNavigate through the sidebar to access different features.",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
                 ),
               ],
-            ),
-          )
-        ],
+            );
+          }
+        },
       ),
     );
   }
