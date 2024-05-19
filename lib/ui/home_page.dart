@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> { // State class for the home page
         ],
       ),
       drawer: Sidebar(), // Add the sidebar menu
-      body: FutureBuilder<Map<String, dynamic>>( // Add a future builder to get the user details
+      body: FutureBuilder<Map<String, dynamic>>(// Add a future builder to get the user details
         future: _prefsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -71,9 +71,9 @@ class _HomePageState extends State<HomePage> { // State class for the home page
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.only(left: 75.0, top: 16.0, bottom: 16),
                   child: Text(
-                    'Welcome, $username', // Display the username
+                    'Welcome, $username! \u{1F44B}',
                     style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
                   ),
                 ),

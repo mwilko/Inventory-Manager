@@ -95,15 +95,23 @@ class _ProfileState extends State<Profile> {
                                     Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text('Username:'),
-                                      Text(username ?? 'Unknown'), // Display the username
+                                      Text(
+                                        'Username:',
+                                        style: TextStyle(color: Colors.black)),
+                                      Text(
+                                        username ?? 'Unknown',
+                                        style: TextStyle(color: Colors.black)), // Display the username
                                     ],
                                     ),
                                     Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text('Email:'),
-                                      Text(email ?? 'Unknown'), // Display the email
+                                      Text(
+                                        'Email:',
+                                        style: TextStyle(color: Colors.black)),
+                                      Text(
+                                        email ?? 'Unknown',
+                                        style: TextStyle(color: Colors.black)), // Display the email
                                     ],
                                     ),
                                   ],
