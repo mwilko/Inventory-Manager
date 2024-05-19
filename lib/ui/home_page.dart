@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'components/sidebar.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import './components/sidebar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'components/theme_notifier.dart';
 
-class HomePage extends StatefulWidget { // Change the class to a StatefulWidget
+class HomePage extends StatefulWidget { // Home page
   final String token;
 
   const HomePage({required this.token, Key? key}) : super(key: key);
@@ -12,132 +14,67 @@ class HomePage extends StatefulWidget { // Change the class to a StatefulWidget
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> { // Change the class to a State<Dashboard>
+class _HomePageState extends State<HomePage> { // State class for the home page
   late String userId;
-  late Future<Map<String, String>> _usernameFuture;
-
-  List? items;
-
-  int _currentIndex = 0;
-  List<Image> images = [ // Create a list of Image widgets
-    Image.asset('images/dispatch.jpeg'),
-    Image.asset('images/inv-manager-hero1.jpeg'),
-    Image.asset('images/warehouse-guy.jpeg'),
-  ];
+  late Future<Map<String, dynamic>> _prefsFuture;
 
   @override
-  void initState() { // Initialize the userId and _usernameFuture
+  void initState() { // Initialize the state
     super.initState();
     Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
     userId = jwtDecodedToken['_id'];
-    _usernameFuture = _initializePrefs();
+    _prefsFuture = _initializePrefs();
   }
 
-  Future<Map<String, String>> _initializePrefs() async { // Initialize SharedPreferences and retrieve the username
+  Future<Map<String, dynamic>> _initializePrefs() async { // Initialize shared preferences
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? username = prefs.getString('username');
     return {'username': username ?? ''};
   }
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>(); // Create a global key for the scaffold
 
   @override
-  Widget build(BuildContext context) { // Update the UI to display the dashboard
+  Widget build(BuildContext context) { // Build the home page
+    ThemeNotifier themeNotifier = Provider.of<ThemeNotifier>(context);
+
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar( // Add a leading icon button to open the drawer
+      appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.menu),
           onPressed: () {
-        _scaffoldKey.currentState!.openDrawer();
+            _scaffoldKey.currentState!.openDrawer();
           },
         ),
+        actions: [ // Add a button to toggle dark mode
+          IconButton(
+            icon: Icon(themeNotifier.isDarkMode ? Icons.brightness_7 : Icons.brightness_2),
+            onPressed: () {
+              themeNotifier.toggleTheme();
+              themeNotifier.savePreferences();
+            },
+          ),
+        ],
       ),
-      drawer: Sidebar(), // Remove the extra positional argument from the Sidebar widget
-      body: FutureBuilder<Map<String, String>>( // Update FutureBuilder to use Map<String, String>
-        future: _usernameFuture,
-        builder: (context, snapshot) { // Update the FutureBuilder builder
+      drawer: Sidebar(), // Add the sidebar menu
+      body: FutureBuilder<Map<String, dynamic>>( // Add a future builder to get the user details
+        future: _prefsFuture,
+        builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) { // Display an error message if SharedPreferences initialization fails
+          } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
-          } else { // Retrieve the username from the snapshot map
+          } else {
             String username = snapshot.data?['username'] ?? 'Unknown';
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox( // Display the PageView with images
-                  height: 275,
-                  child: PageView.builder(
-                    itemCount: images.length,
-                    onPageChanged: (index) {
-                      setState(() {
-                        _currentIndex = index; // Update the current index when the page changes
-                      });
-                    },
-                    itemBuilder: (context, index) {
-                      return Hero( // Add a Hero widget to the image
-                        tag: 'image$index', // Set a unique tag for each image
-                        child: Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: images[index].image, // Display the image
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                SizedBox(height: 20),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(left: 30.0),
-                        child: Text( // Display a welcome message
-                          "Welcome back, $username! \u270B", // Display the username with hand emoji
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 12),
-                      Center( 
-                        child: Text( // Display the title
-                          "Inventory Manager",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Row(
-                        children: [
-                            Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Text( // Display the description
-                              "Welcome to the Inventory Manager. Here you can manage your inventory and keep track of your items. \n\nNavigate through the sidebar to access different features.",
-                              style: TextStyle(fontSize: 16, color: Colors.black), // Set the text color to white
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Text(
-                              "Message of the Day: \n\n\"The best way to predict the future is to create it.\" - Peter Drucker",
-                              style: TextStyle(fontSize: 16, color: Colors.black), // Set the text color to white
-                            )
-                          ),
-                        ],
-                      ),
-                    ],
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    'Welcome, $username', // Display the username
+                    style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
@@ -148,4 +85,3 @@ class _HomePageState extends State<HomePage> { // Change the class to a State<Da
     );
   }
 }
-

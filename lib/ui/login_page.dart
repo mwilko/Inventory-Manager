@@ -55,8 +55,14 @@ class _SignInPageState extends State<SignInPage> { // State class for the sign-i
         await prefs.setString('email', emailController.text); // Save the email to shared preferences
         print('Email saved to prefs: ${prefs.getString('email')}'); // Add this line to check if the email is successfully saved
 
-        Navigator.push( // Navigate to the dashboard page
-            context, MaterialPageRoute(builder: (context) => HomePage(token: myToken)));
+        Navigator.push(
+          context, 
+          MaterialPageRoute(
+            builder: (context) => HomePage(
+              token: myToken, 
+            )
+          )
+        );
       } else {
         showDialog( // Show an error dialog if the login details are invalid
           context: context,
@@ -129,6 +135,7 @@ class _SignInPageState extends State<SignInPage> { // State class for the sign-i
                       TextField( // Text field for the username
                         controller: usernameController,
                         keyboardType: TextInputType.text,
+                        style: TextStyle(color: Colors.black),
                         decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
@@ -140,6 +147,7 @@ class _SignInPageState extends State<SignInPage> { // State class for the sign-i
                       TextField( // Text field for the email
                         controller: emailController,
                         keyboardType: TextInputType.text,
+                        style: TextStyle(color: Colors.black),
                         decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
@@ -151,6 +159,7 @@ class _SignInPageState extends State<SignInPage> { // State class for the sign-i
                       TextField( // Text field for the password
                         controller: passwordController,
                         keyboardType: TextInputType.text,
+                        style: TextStyle(color: Colors.black),
                         decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
