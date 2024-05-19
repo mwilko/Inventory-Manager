@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         return null; // Return null if the route is not handled
       },
       home: (token != null && !JwtDecoder.isExpired(token)) // if its null (username), let it pass
-          ? Dashboard(token: token)
+          ? HomePage(token: token)
           : SignInPage(),
       // Add additional routes here
     );

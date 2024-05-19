@@ -56,7 +56,7 @@ class _SignInPageState extends State<SignInPage> { // State class for the sign-i
         print('Email saved to prefs: ${prefs.getString('email')}'); // Add this line to check if the email is successfully saved
 
         Navigator.push( // Navigate to the dashboard page
-            context, MaterialPageRoute(builder: (context) => Dashboard(token: myToken)));
+            context, MaterialPageRoute(builder: (context) => HomePage(token: myToken)));
       } else {
         showDialog( // Show an error dialog if the login details are invalid
           context: context,
