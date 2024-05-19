@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'ui/dashboard.dart';
+import 'ui/home_page.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'ui/loginPage.dart';
+import 'ui/login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Ensure that the Flutter app is initialized

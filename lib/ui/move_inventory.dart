@@ -53,8 +53,8 @@ class _MoveInventoryState extends State<_MoveInventoryForm> { // MoveInventorySt
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Error'),
-            content: Text('There was an error moving the inventory'),
+            title: Text('Error Relocating Inventory!'),
+            content: Text('There was an error moving the inventory\n\n(Product ID:${_productIdController.text}, Location:${_locationController.text})'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {

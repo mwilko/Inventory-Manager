@@ -14,6 +14,7 @@ class ProductServices { // This class is used to interact with the database
     static async moveInventory(product_id, location) { // product_id and location are passed
         try {
             const relocateInventory = await ProductModel.moveInventory({ product_id, location });
+            print("moveInventory called... (product.service.js)");
             return await relocateInventory.save();
         }
         catch (err) {

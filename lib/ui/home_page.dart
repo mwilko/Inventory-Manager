@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'inventoryLocation.dart'; // Import the InventoryLocation file
+import 'inventory_location.dart'; // Import the InventoryLocation file
 import 'profile.dart'; // Import the Profile file
-import 'moveInventory.dart'; // Import the MoveInventory file
-import 'addInventory.dart'; // Import the AddInventory file
+import 'move_inventory.dart'; // Import the MoveInventory file
+import 'add_inventory.dart'; // Import the AddInventory file
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Dashboard extends StatefulWidget { // Change the class to a StatefulWidget
@@ -215,3 +215,4 @@ class _DashboardState extends State<Dashboard> { // Change the class to a State<
     );
   }
 }
+

@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:velocity_x/velocity_x.dart';
 //import 'applogo.dart';
-import 'loginPage.dart';
+import 'login_page.dart';
 import 'package:http/http.dart' as http;
 import '../api/config.dart';
 

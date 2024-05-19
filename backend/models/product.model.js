@@ -23,6 +23,11 @@ const productSchema = new Schema({ // This schema is used to define the structur
         type: Number,
         required: true,
     },
+    product_id: {
+        type: Number,
+        required: true,
+        unique: true,
+    },
     // Add more fields as needed
 });
 

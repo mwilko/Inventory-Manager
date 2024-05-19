@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'productDescription.dart';
+import 'product_description.dart';
 import '/api/config.dart';
 
 class Product { // Product class to store product details
