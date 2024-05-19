@@ -119,7 +119,6 @@ class _SignInPageState extends State<SignInPage> { // State class for the sign-i
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.6), // Set the container color + opacity
                     borderRadius: BorderRadius.circular(10),
-                    
                   ),
                   padding: EdgeInsets.all(5),
                   child: Column(
