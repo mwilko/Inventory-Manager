@@ -22,7 +22,7 @@ class _SidebarState extends State<Sidebar> { // SidebarState widget to manage th
                 decoration: BoxDecoration(
                 color: Color.fromARGB(242, 31, 24, 30), // Alpha value and RGB to match logo
                 ),
-              child: Image.asset('images/logo.png'), // Remove the child widget
+              child: Image.asset('images/logo-banner-style.png'), // Remove the child widget
             ),
           // Inventory Location button
           TextButton.icon( // Add a button to navigate to the Inventory Location page
