@@ -31,8 +31,14 @@ class MyApp extends StatelessWidget { // Main app widget
           return MaterialApp(
             title: 'Inventory Manager',
             debugShowCheckedModeBanner: false,
-            theme: ThemeData.light(),
-            darkTheme: ThemeData.dark(),
+            theme: ThemeData(
+              fontFamily: 'Manrope',
+              brightness: Brightness.light,
+            ),
+            darkTheme: ThemeData(
+              fontFamily: 'Manrope',
+              brightness: Brightness.dark,
+            ),
             themeMode: themeNotifier.isDarkMode ? ThemeMode.dark : ThemeMode.light,
             initialRoute: '/',
             onGenerateRoute: (settings) { // Generate routes for the app
