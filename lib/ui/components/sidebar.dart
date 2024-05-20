@@ -18,18 +18,12 @@ class _SidebarState extends State<Sidebar> { // SidebarState widget to manage th
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.blue,
+            DrawerHeader(
+                decoration: BoxDecoration(
+                color: Color.fromARGB(242, 31, 24, 30), // Alpha value and RGB to match logo
+                ),
+              child: Image.asset('images/logo.png'), // Remove the child widget
             ),
-            child: Text( // Add a title for the sidebar menu
-              'Sidebar',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-              ),
-            ),
-          ),
           // Inventory Location button
           TextButton.icon( // Add a button to navigate to the Inventory Location page
             icon: Padding( // Add an icon to the button
