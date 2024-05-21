@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../api/config.dart';
+import '../../api/config.dart';
 
 class MoveInventory extends StatelessWidget { // MoveInventory widget to move inventory
   @override

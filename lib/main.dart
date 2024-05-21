@@ -1,55 +1,49 @@
-// lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'ui/home_page.dart';
-import 'ui/login_page.dart';
+import 'ui/core_pages/login_page.dart';
 import 'ui/components/theme_notifier.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'controllers/menu_app_controller.dart';
 
-void main() async { // Main function
-  WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  runApp(MyApp(token: prefs.getString('token')));
+void main() {
+  WidgetsFlutterBinding.ensureInitialized(); // Ensure that the Flutter binding is initialized
+  runApp(MyApp()); // Run the app
 }
 
-class MyApp extends StatelessWidget { // Main app widget
-  final String? token;
-
-  const MyApp({required this.token, Key? key}) : super(key: key);
-
+class MyApp extends StatelessWidget { // MyApp widget to create the app
   @override
-  Widget build(BuildContext context) { // Build the main app
-    return ChangeNotifierProvider( // Use the change notifier provider to toggle between light and dark mode
-      create: (_) {
-        ThemeNotifier themeNotifier = ThemeNotifier();
-        themeNotifier.loadPreferences();
-        return themeNotifier;
-      },
-      child: Consumer<ThemeNotifier>( // Use the theme notifier to toggle between light and dark mode
+  Widget build(BuildContext context) { // Build the app
+    return MultiProvider( // Use MultiProvider to provide multiple providers
+      providers: [
+        ChangeNotifierProvider<ThemeNotifier>(
+          create: (_) {
+            ThemeNotifier themeNotifier = ThemeNotifier();
+            themeNotifier.loadPreferences();
+            return themeNotifier;
+          },
+        ),
+        ChangeNotifierProvider<MenuAppController>(
+          create: (_) => MenuAppController(),
+        ),
+      ],
+      child: Consumer<ThemeNotifier>( // Use Consumer to consume the ThemeNotifier provider
         builder: (context, themeNotifier, child) {
           return MaterialApp(
             title: 'Inventory Manager',
             debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              fontFamily: 'Manrope',
-              brightness: Brightness.light,
+            theme: ThemeData( 
+              fontFamily: 'Manrope', // Set the default font family
+              brightness: Brightness.light, // Set the default brightness to light
             ),
             darkTheme: ThemeData(
-              fontFamily: 'Manrope',
-              brightness: Brightness.dark,
+              fontFamily: 'Manrope', // Set the default font family
+              brightness: Brightness.dark, // Set the default brightness to dark
             ),
             themeMode: themeNotifier.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-            initialRoute: '/',
-            onGenerateRoute: (settings) { // Generate routes for the app
-              if (settings.name == '/login') {
-                return MaterialPageRoute(builder: (_) => SignInPage());
-              }
-              return null;
+            initialRoute: '/login', // Always start at the login page
+            routes: {
+              '/login': (_) => SignInPage(),
+              // Add other routes as needed
             },
-            home: (token != null && !JwtDecoder.isExpired(token!)) // Check if the token is not null and not expired
-                ? HomePage(token: token!)
-                : SignInPage(),
           );
         },
       ),

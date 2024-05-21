@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../add_inventory.dart';
-import '../inventory_location.dart';
-import '../move_inventory.dart';
-import '../profile.dart';
+import '../../core_pages/add_inventory.dart';
+import '../../core_pages/inventory_location.dart';
+import '../../core_pages/move_inventory.dart';
+import '../../core_pages/profile.dart';
 
 class Sidebar extends StatefulWidget { // Sidebar widget to display the sidebar menu
   @override

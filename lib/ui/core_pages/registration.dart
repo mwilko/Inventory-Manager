@@ -7,7 +7,7 @@ import 'package:velocity_x/velocity_x.dart';
 //import 'applogo.dart';
 import 'login_page.dart';
 import 'package:http/http.dart' as http;
-import '../api/config.dart';
+import '../../api/config.dart';
 
 class Registration extends StatefulWidget { // A StatefulWidget to register the user.
   @override
@@ -79,6 +79,7 @@ class _RegistrationState extends State<Registration> {
                   TextField(
                     controller: usernameController,
                     keyboardType: TextInputType.text,
+                    style: TextStyle(color: Colors.black),
                     decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
@@ -91,6 +92,7 @@ class _RegistrationState extends State<Registration> {
                   TextField(
                     controller: emailController,
                     keyboardType: TextInputType.text,
+                    style: TextStyle(color: Colors.black),
                     decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
@@ -103,6 +105,7 @@ class _RegistrationState extends State<Registration> {
                   TextField(
                     controller: passwordController,
                     keyboardType: TextInputType.text,
+                    style: TextStyle(color: Colors.black),
                     decoration: InputDecoration(
                         suffixIcon: IconButton(icon: Icon(Icons.copy),onPressed: (){
                           final data = ClipboardData(text: passwordController.text);
