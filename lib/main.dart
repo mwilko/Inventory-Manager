@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget { // MyApp widget to create the app
           create: (_) => MenuAppController(),
         ),
       ],
-      child: Consumer<ThemeNotifier>( // Use Consumer to consume the ThemeNotifier provider
+      child:Consumer<ThemeNotifier>( // Use Consumer to consume the ThemeNotifier provider
         builder: (context, themeNotifier, child) {
           return MaterialApp(
             title: 'Inventory Manager',

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert'; // Import the dart convert library for put handling
 import '../../api/config.dart';
 
 class AddInventory extends StatelessWidget { // AddInventory widget to create new inventory
@@ -22,24 +23,76 @@ class _AddInventoryState extends State<_AddInventoryForm> { // AddInventoryState
   TextEditingController _quantityController = TextEditingController();
   bool _isNotValidate = false;
 
-  Future<void> createInventory() async { // Function to create new inventory
+  Future<void> createInventory() async {
+    String url = addInventory;
+    print('URL: $url');
+
+    print('Raw Category Input: "${_categoryController.text}"'); // debug
+
+    // split and trim categories
+    List<String> categories = _categoryController.text.split(',').map((category) => category.trim()).toList();
+
+    //Debug: Print the processed categories list
+    print('Processed Categories: $categories');
+
     var response = await http.post(
-      Uri.parse(addInventory), // Send a POST request to the API
-      body: {
+      Uri.parse(addInventory),
+      headers: <String, String>{ // Send a POST request to the API
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{ // Encode the body as JSON
         'product_name': _productNameController.text,
         'manufacturer': _manufacturerController.text,
-        'category': _categoryController.text,
-        'location': _locationController.text,
+        'category': categories, // categories list
+        'location': _locationController.text, 
         'quantity': _quantityController.text,
-      },
+      }),
     );
 
     if (response.statusCode == 200) { // Check if the response is successful
-      // Inventory created successfully
       print('Inventory created successfully');
-    } else {
-      // Error creating inventory
+      print('response body: ${response.body}');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Inventory Created'),
+            content: Text('The inventory has been created successfully'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    } else { // Show an error dialog if the inventory creation fails
       print('Error creating inventory: ${response.statusCode}');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error Creating Inventory'),
+            content: Text( // Show the error message
+              'There was an error creating the inventory\n\n'
+              '${_productNameController.text}, ${_manufacturerController.text}, '
+              '${_categoryController.text}, ${_locationController.text}, ${_quantityController.text} '
+              '\n(Error ${response.statusCode})',
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 

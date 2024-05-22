@@ -11,8 +11,8 @@ const productSchema = new Schema({ // This schema is used to define the structur
         type: String,
         required: true,
     },
-    catagory: {
-        type: String,
+    category: {
+        type: [String],//list of categories
         required: true,
     },
     location: {
@@ -23,9 +23,9 @@ const productSchema = new Schema({ // This schema is used to define the structur
         type: Number,
         required: true,
     },
-    product_id: {
+    product_id: { // This field is used to uniquely identify a product (used for client-side operations)
         type: Number,
-        required: true,
+        required: false, // auto-generated, not needed in the request
         unique: true,
     },
     // Add more fields as needed

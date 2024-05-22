@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert'; // Import the dart convert library for put handling
 import '../../api/config.dart';
 
 class MoveInventory extends StatelessWidget { // MoveInventory widget to move inventory
   @override
   Widget build(BuildContext context) {
+    print('Building MoveInventory widget');
     return _MoveInventoryForm();
   }
 }
@@ -20,13 +22,15 @@ class _MoveInventoryState extends State<_MoveInventoryForm> { // MoveInventorySt
   bool _isNotValidate = false;
 
   Future<void> relocateInventory() async { // Function to move inventory
-    var response = await http.post(
-      Uri.parse(moveInventory),
-      body: {
-        'product_id': _productIdController.text,
-        'location': _locationController.text,
-      },
+    print('Attempting to move inventory with product_id: ${_productIdController.text} and location: ${_locationController.text}');
+    String url = moveInventory + '/' + '${_productIdController.text}' + '/' + '${_locationController.text}'; // debug
+    print('URL: $url');
+    var response = await http.put(
+      Uri.parse(moveInventory + '/' + '${_productIdController.text}' + '/' + '${_locationController.text}'), // Send a PUT request to the API
     );
+
+    // Handle the response here
+    print('Received response with status code: ${response.statusCode}');
 
     if (response.statusCode == 200) { // Check if the response is successful
       print('Inventory moved successfully');
@@ -48,7 +52,7 @@ class _MoveInventoryState extends State<_MoveInventoryForm> { // MoveInventorySt
         },
       );
     } else { // Show an error dialog if the inventory move fails
-      print('Error relocating inventory: ${response.statusCode}');
+      print('Error relocating inventory ${_productIdController.text}, ${_locationController.text}: ${response.statusCode}');
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -71,6 +75,7 @@ class _MoveInventoryState extends State<_MoveInventoryForm> { // MoveInventorySt
 
   @override
   Widget build(BuildContext context) { // Build the UI for the Move Inventory page
+    print('Building UI for Move Inventory page');
     return Scaffold(
       appBar: AppBar(
         title: Text('Move Inventory'),
@@ -119,6 +124,7 @@ class _MoveInventoryState extends State<_MoveInventoryForm> { // MoveInventorySt
             ),
             ElevatedButton( // Add a button to move the inventory
               onPressed: () {
+                print('Move Inventory button pressed');
                 relocateInventory(); // Call the createInventory function
               },
               child: Text('Move Inventory'),
